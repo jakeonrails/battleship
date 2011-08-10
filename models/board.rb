@@ -36,6 +36,8 @@ class Board
     x, y = ship.x, ship.y
     ship.size.times do
       set_cell x, y, ship
+      x += x_delta
+      y += y_delta
     end
   end
 
