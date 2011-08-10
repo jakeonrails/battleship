@@ -3,6 +3,9 @@ class Board
   attr_reader :cells
 
   def initialize size
+    if !size.is_a?(Fixnum) || size <= 0
+      raise ArgumentError, "invalid size #{size}"
+    end
     self.height = size
     self.width = size
     initialize_cells
