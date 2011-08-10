@@ -15,8 +15,6 @@ class Board
   end
 
   # Place the ship on the board.
-  #
-  # Returns true on success, false on failure.
   def place_ship ship
     if ship.vertical?
       x_delta, y_delta = 1, 0 # traverse vertically
