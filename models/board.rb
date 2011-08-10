@@ -2,6 +2,9 @@ class Board
   attr_accessor :height, :width
   attr_reader :cells
 
+  class CellOccupied < ArgumentError; end
+  class CellOutOfBounds < ArgumentError; end
+
   def initialize size
     if !size.is_a?(Fixnum) || size <= 0
       raise ArgumentError, "invalid size #{size}"
@@ -24,7 +27,7 @@ class Board
     x, y = ship.x, ship.y
     ship.size.times do
       if get_cell x, y
-        raise ArgumentError, "cannot place ship at #{x}, #{y}"
+        raise CellOccupied, "cannot place ship at #{x}, #{y}"
       end
       x += x_delta
       y += y_delta
@@ -55,7 +58,7 @@ private
   #   - a ship instance (for unhit ships)
   def get_cell x, y
     unless valid_cell?(x, y)
-      raise ArgumentError, "cell out of bounds at #{x}, #{x}"
+      raise CellOutOfBounds, "cell out of bounds at #{x}, #{x}"
     end
 
     cells[x][y]
@@ -66,7 +69,7 @@ private
   # See Board#get_cell for valid possible values.
   def set_cell x, y, value
     unless valid_cell?(x, y)
-      raise ArgumentError, "cell out of bounds at #{x}, #{x}"
+      raise CellOutOfBounds, "cell out of bounds at #{x}, #{x}"
     end
 
     cells[x][y] = value
