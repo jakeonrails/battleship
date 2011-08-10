@@ -1,6 +1,7 @@
 class Ship
 
-  attr_reader :x, :y
+  attr_accessor :x, :y, :size
+  attr_accessor :orientation
 
   def initialize(player, x, y, size)
     self.player = player
@@ -14,6 +15,11 @@ class Ship
   def vertical?
     self.orientation == "vertical"
   end
+
+private
+
+  attr_writer :player
+
 
 end
 
