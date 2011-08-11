@@ -3,6 +3,7 @@ class BoardRenderer
   OPEN_SEA  = ' '
   HIT       = '*'
   SUNK      = 'X'
+  MISS      = '!'
   LOCH_NESS = 'L'
 
   def initialize board
@@ -58,6 +59,8 @@ private
         HIT
       when :sunk
         SUNK
+      when :miss
+        MISS
       else
         LOCH_NESS
       end
@@ -71,6 +74,7 @@ private
     puts "Key: #{SHIP} = your ship  /  " \
          "#{HIT} = hit on a ship  / " \
          "#{SUNK} = sunken ship  / " \
+         "#{MISS} = miss / " \
          "#{LOCH_NESS} = Loch Ness Monster"
   end
 
