@@ -40,7 +40,7 @@ class Board
       y += y_delta
     end
 
-    self.ships << ship
+    ships << ship
   end
 
   def shoot x, y
@@ -56,7 +56,7 @@ class Board
   end
 
   def won?
-    self.ships.all? do |ship|
+    ships.all? do |ship|
       !ship.alive?
     end
   end
