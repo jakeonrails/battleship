@@ -89,7 +89,7 @@ private
   # Returns true if the specified x, y coordinates fall
   # within the board.
   def valid_cell? x, y
-    x > 0 && x < width && y > 0 && y < height
+    x >= 0 && x < width && y >= 0 && y < height
   end
 
   # Convenience method for traversing over the cells occupied
