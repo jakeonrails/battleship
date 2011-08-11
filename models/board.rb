@@ -18,26 +18,14 @@ class Board
 
   # Place the ship on the board.
   def place_ship ship
-    if ship.vertical?
-      x_delta, y_delta = 1, 0 # traverse vertically
-    else
-      x_delta, y_delta = 0, 1 # traverse horizontally
-    end
-
-    x, y = ship.x, ship.y
-    ship.size.times do
+    traverse_ship ship do |x, y|
       if get_cell x, y
         raise CellOccupied, "cannot place ship at #{x}, #{y}"
       end
-      x += x_delta
-      y += y_delta
     end
 
-    x, y = ship.x, ship.y
-    ship.size.times do
+    traverse_ship ship do |x, y|
       set_cell x, y, ship
-      x += x_delta
-      y += y_delta
     end
 
     ships << ship
@@ -102,5 +90,24 @@ private
   # within the board.
   def valid_cell? x, y
     x > 0 && x < width && y > 0 && y < height
+  end
+
+  # Convenience method for traversing over the cells occupied
+  # by a ship. The supplied block will be yielded to once for
+  # each cell; the x and y coordinates of the cell are passed
+  # in as parameters.
+  def traverse_ship ship, &block
+    if ship.vertical?
+      x_delta, y_delta = 1, 0 # traverse vertically
+    else
+      x_delta, y_delta = 0, 1 # traverse horizontally
+    end
+
+    x, y = ship.x, ship.y
+    ship.size.times do
+      yield x, y
+      x += x_delta
+      y += y_delta
+    end
   end
 end # class Board
