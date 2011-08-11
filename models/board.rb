@@ -4,6 +4,7 @@ class Board
 
   class CellOccupied < ArgumentError; end
   class CellOutOfBounds < ArgumentError; end
+  class DuplicateShot < ArgumentError; end
 
   def initialize size
     if !size.is_a?(Fixnum) || size <= 0
@@ -15,8 +16,6 @@ class Board
   end
 
   # Place the ship on the board.
-  #
-  # Returns true on success, false on failure.
   def place_ship ship
     if ship.vertical?
       x_delta, y_delta = 1, 0 # traverse vertically
@@ -36,7 +35,19 @@ class Board
     x, y = ship.x, ship.y
     ship.size.times do
       set_cell x, y, ship
+      x += x_delta
+      y += y_delta
     end
+  end
+
+  def shoot x, y
+    ship = get_cell x, y
+    unless ship.nil?
+      raise DuplicateShot, "cell #{x}, #{y} has already been shot"
+    end
+
+    ship.shoot(x, y) # let the ship know that it's been hit
+    set_cell(x, y, ship.alive? ? :hit : :sunk)
   end
 
 private
