@@ -12,6 +12,7 @@ class Board
     end
     self.height = size
     self.width = size
+    self.ships = []
     initialize_cells
   end
 
@@ -38,6 +39,8 @@ class Board
       x += x_delta
       y += y_delta
     end
+
+    self.ships << ship
   end
 
   def shoot x, y
@@ -46,13 +49,22 @@ class Board
       raise DuplicateShot, "cell #{x}, #{y} has already been shot"
     end
 
-    ship.shoot(x, y) # let the ship know that it's been hit
-    set_cell(x, y, ship.alive? ? :hit : :sunk)
+    ship.shoot x, y # let the ship know that it's been hit
+    status = ship.alive? ? :hit : :sunk
+    set_cell x, y, status
+    won? ? :won : status
+  end
+
+  def won?
+    self.ships.all? do |ship|
+      !ship.alive?
+    end
   end
 
 private
 
   attr_writer :cells
+  attr_accessor :ships
 
   def initialize_cells
     self.cells = Array.new(height) do
