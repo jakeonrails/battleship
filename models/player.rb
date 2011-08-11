@@ -1,33 +1,32 @@
 class Player
 
-  attr_reader :board, :ships
+  attr_reader :board, :ships, :name
 
-  def initialize(game, num_ships)
-    self.board = Board.new
+  def initialize(name, num_ships, board_size)
+    self.name = name
+    self.board = Board.new(board_size)
     self.ships = Array.new(num_ships)
   end
 
-  def place_ships
+  def setup_board
     self.ships.map! do |ship|
-      ship = Ship.new
-      do
-        success = randomly_place_ship(ship)
-      until success
-      ship
+      ship = Ship.new(1)
+      begin
+        ship.place(rand(board.width), rand(board.height), :horizontal)
+        self.board.place_ship(ship)
+      rescue
+        retry
+      end
+     ship
     end
   end
 
-  def randomly_place_ship(ship)
-    begin
-      ship.x = rand(board.width)
-      ship.y = rand(board.height)
-      ship.orientation = "vertical"
-      self.board.place_ship(ship)
-    rescue
-      return false
-    end
-    true
+  def attack(defender, x, y)
+    defender.board.shoot(x, y)
   end
+
+private
+  attr_writer :name, :board, :ships
 
 end
 

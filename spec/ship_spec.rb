@@ -11,7 +11,8 @@ describe Ship do
 
   describe "#shoot" do
     it "should set health when hit" do
-      @ship = Ship.new(@board, 5, 5, 5, :vertical)
+      @ship = Ship.new(5)
+      @ship.place(5, 5, :vertical)
       @ship.shoot(5, 5)
       @ship.health.should == "x    "
       @ship.shoot(5, 0)
@@ -19,7 +20,8 @@ describe Ship do
       @ship.shoot(5, 6)
       @ship.health.should == "xx   "
 
-      @ship = Ship.new(@board, 5, 5, 5, :horizontal)
+      @ship = Ship.new(5)
+      @ship.place(5, 5, :horizontal)
       @ship.shoot(5, 5)
       @ship.health.should == "x    "
       @ship.shoot(0, 0)
@@ -33,7 +35,8 @@ describe Ship do
 
   describe "#alive?" do
     it "should return false when ship is dead" do
-      @ship = Ship.new(@board, 0, 0, 1, :vertical)
+      @ship = Ship.new(1)
+      @ship.place(0, 0, :vertical)
       @ship.alive?.should == true
       @ship.shoot(0, 0)
       @ship.alive?.should == false

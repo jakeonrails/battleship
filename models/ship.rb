@@ -5,13 +5,20 @@ class Ship
   attr_reader :board
   attr_reader :health
 
-  def initialize(board, x, y, size, orientation)
-    self.board = board
+  def initialize(size)
+    self.board = nil
+    self.x = 0
+    self.y = 0
+    self.orientation = :horizontal
+    self.size = size
+    self.health = " " * size
+    self.type = "Battleship"
+  end
+
+  def place x, y, orientation
     self.x = x
     self.y = y
     self.orientation = orientation
-    self.size = size
-    self.health = " " * size
   end
 
   def vertical?
@@ -33,7 +40,7 @@ class Ship
   end
 
 private
-  attr_writer :board, :health
+  attr_writer :board, :health, :type
 
 end
 
