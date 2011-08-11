@@ -33,14 +33,17 @@ class Board
 
   def shoot x, y
     ship = get_cell x, y
-    unless ship.nil?
+    case ship
+    when :hit, :miss, :sunk
       raise DuplicateShot, "cell #{x}, #{y} has already been shot"
+    when nil
+      set_cell x, y, :miss
+    else
+      ship.shoot x, y # let the ship know that it's been hit
+      status = ship.alive? ? :hit : :sunk
+      set_cell x, y, status
+      won? ? :won : status
     end
-
-    ship.shoot x, y # let the ship know that it's been hit
-    status = ship.alive? ? :hit : :sunk
-    set_cell x, y, status
-    won? ? :won : status
   end
 
   def won?
